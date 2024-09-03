@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steel Weight Calculator & LME Prices</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .header {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .header img {
+            height: 80px;
+        }
+        .header .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        .header .nav-buttons button {
+    background-color: white;
+    color: #080000;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    font-size: 1em; /* Ensure the font size is consistent */
+}
+
+.header .nav-buttons button:hover {
+    background-color: #218838;
+    color: white;
+}        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .container h2 {
+            color: #28a745;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        .form-group label {
+            flex: 1;
+            margin-right: 10px;
+            font-size: 0.9em;
+        }
+        .form-group input, .form-group select {
+            flex: 2;
+            padding: 8px;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        .form-group .unit-select {
+            flex: 0.5;
+            padding: 8px;
+            font-size: 0.9em;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        .shape-image {
+            width: 300px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: block;
+            margin-left: auto;
+            margin-right: 0;
+        }
+        .about-us, .contact {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .about-us h2, .contact h2 {
+            color: #28a745;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        .about-us p, .contact p {
+            font-size: 1em;
+            line-height: 1.6;
+            color: #333;
+        }
+        .footer {
+            background-color: #28a745;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjnvh4sV4fFAxrNyZ6qHu2oKNZSbqIDRGSOeL-FgN8f1Xr2HwnliQYQeaxUjCCzxhdJib1-jxVIg_yMD-BBXoVNrFx8j197R0BJMADW2PwAwPX6PRLfUvdam_Op9A_UiLWLew9zsLCA2A10GiTIe0O1pNCDrp4yTTnrKOy4aECQg8p-4VECt3gMK8ADzVAP/s1600/Logo.png" alt="Logo">
+    <div class="nav-buttons">
+        <button onclick="window.location.href='index.html'">Home</button>
+        <button onclick="scrollToSection('about-us')">About Us</button>
+        <button onclick="window.open('https://www.lme.com/en/', '_blank')">LME Prices</button>
+        <button onclick="window.open('https://tradingeconomics.com/', '_blank')">Trading Economics</button>
+        <button onclick="scrollToSection('contact')">Contact</button>
+    </div>
+</div>
+
+<div class="container">
+    <div>
+        <h2>Steel Weight Calculator</h2>
+        <form id="steelForm">
+            <div class="form-group">
+                <label for="material">Material:</label>
+                <select id="material" onchange="updateDensity()">
+                    <option value="steel" data-density="7850">Steel</option>
+                    <option value="aluminium" data-density="2700">Aluminium</option>
+                    <option value="copper" data-density="8960">Copper</option>
+                    <option value="zinc" data-density="7135">Zinc</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="shape">Shape:</label>
+                <select id="shape" onchange="updateInputs(); updateImage()">
+                    <option value="rectangular">Rectangular Bar</option>
+                    <option value="round">Round Bar</option>
+                    <option value="sheet">Sheet/Plate</option>
+                    <option value="hex">Hex Bar</option>
+                </select>
+            </div>
+
+            <div id="rectangularInputs">
+                <div class="form-group">
+                    <label for="length">Length:</label>
+                    <input type="number" id="length" step="any" required>
+                    <select class="unit-select" id="lengthUnit">
+<option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="width">Width:</label>
+                    <input type="number" id="width" step="any" required>
+                    <select class="unit-select" id="widthUnit">
+                       <option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="thickness">Thickness:</label>
+                    <input type="number" id="thickness" step="any" required>
+                    <select class="unit-select" id="thicknessUnit">
+                        <option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="roundInputs" style="display: none;">
+                <div class="form-group">
+                    <label for="diameter">Diameter:</label>
+                    <input type="number" id="diameter" step="any" required>
+                    <select class="unit-select" id="diameterUnit">
+                      <option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="lengthRound">Length:</label>
+                    <input type="number" id="lengthRound" step="any" required>
+                    <select class="unit-select" id="lengthRoundUnit">
+                     <option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="sheetInputs" style="display: none;">
+                <div class="form-group">
+                    <label for="lengthSheet">Length:</label>
+                    <input type="number" id="lengthSheet" step="any" required>
+                    <select class="unit-select" id="lengthSheetUnit">
+                     <option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="widthSheet">Width:</label>
+                    <input type="number" id="widthSheet" step="any" required>
+                    <select class="unit-select" id="widthSheetUnit">
+                       <option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="thicknessSheet">Thickness:</label>
+                    <input type="number" id="thicknessSheet" step="any" required>
+                    <select class="unit-select" id="thicknessSheetUnit">
+                   <option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="hexInputs" style="display: none;">
+                <div class="form-group">
+                    <label for="sideLength">Side Length:</label>
+                    <input type="number" id="sideLength" step="any" required>
+                    <select class="unit-select" id="sideLengthUnit">
+                      <option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="heightHex">Height:</label>
+                    <input type="number" id="heightHex" step="any" required>
+                    <select class="unit-select" id="heightHexUnit">
+                        <option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>	
+                    </select>
+                </div>
+            </div>
+
+            <button type="button" onclick="calculateWeight()">Calculate Weight</button>
+            <div class="result">
+                Weight: <span id="weightValue">0.00</span> kg<br>
+                Weight: <span id="weightValuePounds">0.00</span> lbs
+            </div>
+        </form>
+    </div>
+
+    <img id="shapeImage" src="Rectangular.png" alt="Shape Image" class="shape-image">
+</div>
+
+<div id="about-us" class="about-us">
+    <h2>About Us</h2>
+    <p>At Metal Weight Calculator, we are dedicated to providing you with accurate and reliable tools for calculating the weight of various metals. Our mission is to simplify the process of metal weight calculations, making it easier for engineers, manufacturers, and DIY enthusiasts to get the precise measurements they need for their projects.</p>
+
+
+<p>Our state-of-the-art calculators are designed to handle a wide range of metal shapes and dimensions. Whether you're working with round bars, rectangular bars, sheets, or hex bars, our calculators provide instant results in both kilograms and pounds, with millimeters as the default unit of measurement. We continually update our tools to ensure they meet the highest standards of accuracy and usability.</p>
+</div>
+
+<div id="contact" class="contact">
+    <h2>Contact</h2>
+    <p>If you have any questions, feel free to reach out to us at <a href="mailto:metalweightcalculator@gmail.com">metalweightcalculator@gmail.com</a>.</p>
+</div>
+
+<div class="footer">
+    <a href="tandc.html" target="_blank">Terms and Conditions</a>
+    <a href="copyright.html" target="_blank">Disclaimer</a>
+    <a href="privacy.html">Privacy</a>
+<p>Copyright © 2024 Metal Weight Calculator</p>
+</div>
+
+<script>
+    function updateInputs() {
+        const shape = document.getElementById('shape').value;
+        document.getElementById('rectangularInputs').style.display = shape === 'rectangular' ? 'block' : 'none';
+        document.getElementById('roundInputs').style.display = shape === 'round' ? 'block' : 'none';
+        document.getElementById('sheetInputs').style.display = shape === 'sheet' ? 'block' : 'none';
+        document.getElementById('hexInputs').style.display = shape === 'hex' ? 'block' : 'none';
+    }
+
+    function updateImage() {
+        const shape = document.getElementById('shape').value;
+        const imagePath = {
+            rectangular: 'Rectangular.png',
+            round: 'Round Bar.png',
+            sheet: 'sheet.jpg',
+            hex: 'hexbars.jpg'
+        };
+        document.getElementById('shapeImage').src = imagePath[shape];
+    }
+
+    function updateDensity() {
+        // Update density based on the selected material
+    }
+
+    function convertToMeters(value, unit) {
+        switch (unit) {
+            case 'mm': return value / 1000;
+            case 'cm': return value / 100;
+            case 'ft': return value * 0.3048;
+            case 'in': return value * 0.0254;
+            default: return value; // 'm' or any other units default to meters
+        }
+    }
+
+    function convertKgToPounds(kg) {
+        return kg * 2.20462;
+    }
+
+    function calculateWeight() {
+        const shape = document.getElementById('shape').value;
+        const density = parseFloat(document.querySelector('#material option:checked').getAttribute('data-density'));
+        let weightKg = 0;
+
+        let length, width, thickness, diameter, radius, height, sideLength, area;
+
+        if (shape === 'rectangular') {
+            length = convertToMeters(parseFloat(document.getElementById('length').value), document.getElementById('lengthUnit').value);
+            width = convertToMeters(parseFloat(document.getElementById('width').value), document.getElementById('widthUnit').value);
+            thickness = convertToMeters(parseFloat(document.getElementById('thickness').value), document.getElementById('thicknessUnit').value);
+            weightKg = length * width * thickness * density;
+        } else if (shape === 'round') {
+            diameter = convertToMeters(parseFloat(document.getElementById('diameter').value), document.getElementById('diameterUnit').value);
+            length = convertToMeters(parseFloat(document.getElementById('lengthRound').value), document.getElementById('lengthRoundUnit').value);
+            radius = diameter / 2;
+            weightKg = Math.PI * Math.pow(radius, 2) * length * density;
+        } else if (shape === 'sheet') {
+            length = convertToMeters(parseFloat(document.getElementById('lengthSheet').value), document.getElementById('lengthSheetUnit').value);
+            width = convertToMeters(parseFloat(document.getElementById('widthSheet').value), document.getElementById('widthSheetUnit').value);
+            thickness = convertToMeters(parseFloat(document.getElementById('thicknessSheet').value), document.getElementById('thicknessSheetUnit').value);
+            weightKg = length * width * thickness * density;
+        } else if (shape === 'hex') {
+            sideLength = convertToMeters(parseFloat(document.getElementById('sideLength').value), document.getElementById('sideLengthUnit').value);
+            height = convertToMeters(parseFloat(document.getElementById('heightHex').value), document.getElementById('heightHexUnit').value);
+            area = (3 * Math.sqrt(3) / 2) * Math.pow(sideLength, 2);
+            weightKg = area * height * density;
+        }
+
+        const weightPounds = convertKgToPounds(weightKg);
+
+        document.getElementById('weightValue').innerText = weightKg.toFixed(2);
+        document.getElementById('weightValuePounds').innerText = weightPounds.toFixed(2);
+    }
+
+    function scrollToSection(id) {
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
