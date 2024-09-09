@@ -4,4 +4,4 @@ Disallow: /nogooglebot/
 User-agent: *
 Allow: /
 
-Sitemap: https://metalweightcalculator.in/sitemap.xml
+Sitemap: https://metalweightcalculator.in
