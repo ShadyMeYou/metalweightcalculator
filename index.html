@@ -179,6 +179,8 @@
                     <option value="round">Round Bar</option>
                     <option value="sheet">Sheet/Plate</option>
                     <option value="hex">Hex Bar</option>
+                    <option value="Pipe">Pipe</option>
+                    
                 </select>
             </div>
 
@@ -320,6 +322,49 @@
                 </div>
             </div>
 
+            
+             <div id="PipeInputs" style="display: none;">
+                <div class="form-group">
+                    <label for="Outerdiameter">Outer Diameter:</label>
+                    <input type="number" id="Outerdiameter" step="any" required>
+                    <select class="unit-select" id="OuterdiameterUnit">
+                      <option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="lengthPipe">Length:</label>
+                    <input type="number" id="lengthPipe" step="any" required>
+                    <select class="unit-select" id="lengthPipeUnit">
+                     <option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                    <label for="thicknessPipe">Thickness:</label>
+                    <input type="number" id="thicknessPipe" step="any" required>
+                    <select class="unit-select" id="thicknessPipeUnit">
+                   <option value="mm">mm</option>                        
+<option value="m">m</option>
+                        
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                        <option value="cm">cm</option>
+                    </select>
+                </div>
+            </div>
+
             <button type="button" onclick="calculateWeight()">Calculate Weight</button>
             <div class="result">
                 Weight: <span id="weightValue">0.00</span> kg<br>
@@ -358,6 +403,7 @@
         document.getElementById('roundInputs').style.display = shape === 'round' ? 'block' : 'none';
         document.getElementById('sheetInputs').style.display = shape === 'sheet' ? 'block' : 'none';
         document.getElementById('hexInputs').style.display = shape === 'hex' ? 'block' : 'none';
+        document.getElementById('PipeInputs').style.display = shape === 'Pipe' ? 'block' : 'none';
     }
 
     function updateImage() {
@@ -366,7 +412,8 @@
             rectangular: 'Rectangular.png',
             round: 'Round Bar.png',
             sheet: 'sheet.jpg',
-            hex: 'hexbars.jpg'
+            hex: 'hexbars.jpg',
+            Pipe:'Pipe.jpg'
         };
         document.getElementById('shapeImage').src = imagePath[shape];
     }
@@ -416,6 +463,12 @@
             height = convertToMeters(parseFloat(document.getElementById('heightHex').value), document.getElementById('heightHexUnit').value);
             area = (3 * Math.sqrt(3) / 2) * Math.pow(sideLength, 2);
             weightKg = area * height * density;
+        }  else if (shape === 'Pipe') {
+            diameter = convertToMeters(parseFloat(document.getElementById('Outerdiameter').value), document.getElementById('OuterdiameterUnit').value);
+            length = convertToMeters(parseFloat(document.getElementById('lengthPipe').value), document.getElementById('lengthPipeUnit').value);
+            radius = diameter / 2;
+            thickness = convertToMeters(parseFloat(document.getElementById('thicknessPipe').value), document.getElementById('thicknessPipeUnit').value);
+            weightKg = Math.PI * (Math.pow(radius, 2)-Math.pow((radius-thicknessPipe),2)) * length * density;
         }
 
         const weightPounds = convertKgToPounds(weightKg);
