@@ -325,9 +325,9 @@
             
              <div id="PipeInputs" style="display: none;">
                 <div class="form-group">
-                    <label for="Outerdiameter">Outer Diameter:</label>
-                    <input type="number" id="Outerdiameter" step="any" required>
-                    <select class="unit-select" id="OuterdiameterUnit">
+                    <label for="outerDiameter">Outer Diameter:</label>
+                    <input type="number" id="outerDiameter" step="any" required>
+                    <select class="unit-select" id="outerDiameterUnit">
                       <option value="mm">mm</option>                        
 <option value="m">m</option>
                         
@@ -464,7 +464,7 @@
             area = (3 * Math.sqrt(3) / 2) * Math.pow(sideLength, 2);
             weightKg = area * height * density;
         }  else if (shape === 'Pipe') {
-        const outerDiameter = convertToMeters(parseFloat(document.getElementById('Outerdiameter').value), document.getElementById('OuterdiameterUnit').value);
+        const outerDiameter = convertToMeters(parseFloat(document.getElementById('outerDiameter').value), document.getElementById('outerDiameterUnit').value);
         thickness = convertToMeters(parseFloat(document.getElementById('thicknessPipe').value), document.getElementById('thicknessPipeUnit').value);
         length = convertToMeters(parseFloat(document.getElementById('lengthPipe').value), document.getElementById('lengthPipeUnit').value);
         outerRadius = outerDiameter / 2;
