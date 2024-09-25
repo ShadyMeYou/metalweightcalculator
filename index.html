@@ -464,13 +464,13 @@
             area = (3 * Math.sqrt(3) / 2) * Math.pow(sideLength, 2);
             weightKg = area * height * density;
         }  else if (shape === 'Pipe') {
-            diameter = convertToMeters(parseFloat(document.getElementById('Outerdiameter').value), document.getElementById('OuterdiameterUnit').value);
-            length = convertToMeters(parseFloat(document.getElementById('lengthPipe').value), document.getElementById('lengthPipeUnit').value);
-            radius = diameter / 2;
-            innerRadius = OuterRadius - thickness;
-            thickness = convertToMeters(parseFloat(document.getElementById('thicknessPipe').value), document.getElementById('thicknessPipeUnit').value);
-            weightKg = thicknessPipe * lengthPipe;
-        }
+        const outerDiameter = convertToMeters(parseFloat(document.getElementById('Outerdiameter').value), document.getElementById('OuterdiameterUnit').value);
+        thickness = convertToMeters(parseFloat(document.getElementById('thicknessPipe').value), document.getElementById('thicknessPipeUnit').value);
+        length = convertToMeters(parseFloat(document.getElementById('lengthPipe').value), document.getElementById('lengthPipeUnit').value);
+        outerRadius = outerDiameter / 2;
+        innerRadius = outerRadius - thickness;
+        weightKg = Math.PI * length * (Math.pow(outerRadius, 2) - Math.pow(innerRadius, 2)) * density;
+    }
 
         const weightPounds = convertKgToPounds(weightKg);
 
