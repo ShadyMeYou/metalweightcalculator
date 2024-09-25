@@ -467,8 +467,10 @@
             diameter = convertToMeters(parseFloat(document.getElementById('Outerdiameter').value), document.getElementById('OuterdiameterUnit').value);
             length = convertToMeters(parseFloat(document.getElementById('lengthPipe').value), document.getElementById('lengthPipeUnit').value);
             radius = diameter / 2;
+            OuterRadius= Outerdiameter/2
+            innerRadius = OuterRadius - thickness;
             thickness = convertToMeters(parseFloat(document.getElementById('thicknessPipe').value), document.getElementById('thicknessPipeUnit').value);
-            weightKg = Math.PI * (Math.pow(radius, 2)-Math.pow((radius-thicknessPipe),2)) * length * density;
+            weightKg = Math.PI * (Math.pow(OuterRadius, 2) - Math.pow(innerRadius, 2)) * length * density;
         }
 
         const weightPounds = convertKgToPounds(weightKg);
